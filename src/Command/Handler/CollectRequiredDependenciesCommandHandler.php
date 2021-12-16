@@ -30,7 +30,7 @@ final class CollectRequiredDependenciesCommandHandler
     public function collect(LoadRequiredDependenciesCommand $command): DependencyCollection
     {
         $dependencyCollection = new DependencyCollection();
-        $providedSymbolLoader = $this->providedSymbolLoaderBuilder->build($command->getBaseDir());
+        $providedSymbolLoader = $this->providedSymbolLoaderBuilder->build();
 
         foreach ($command->getPackageLinks() as $require) {
             $composerPackage = $this->packageResolver->resolve(
@@ -43,11 +43,13 @@ final class CollectRequiredDependenciesCommandHandler
                 continue;
             }
 
+            $baseDir = $command->getBaseDir() . '/' . $composerPackage->getName();
+
             $dependencyCollection->add(
                 new RequiredDependency(
                     $composerPackage,
                     (new SymbolList())->addAll(
-                        $providedSymbolLoader->load($composerPackage)
+                        $providedSymbolLoader->withBaseDir($baseDir)->load($composerPackage)
                     )
                 )
             );

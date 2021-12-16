@@ -155,4 +155,20 @@ class UnusedCommandTest extends TestCase
 
         self::assertStringNotContainsString('-implementation', $output->fetch());
     }
+
+    /**
+     * @test
+     */
+    public function itShouldNotReportFileDependencyWithFunctionGuard(): void
+    {
+        chdir(__DIR__ . '/../assets/TestProjects/FileDependencyFunctionWithGuard');
+
+        self::assertEquals(
+            0,
+            $this->getApplication()->run(
+                new ArrayInput(['unused']),
+                new NullOutput()
+            )
+        );
+    }
 }
