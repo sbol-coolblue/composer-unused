@@ -36,7 +36,7 @@ csfix:
 	docker exec -it $(CONTAINER) vendor/bin/phpcbf
 
 box:
-	docker exec -it $(CONTAINER) php box.phar compile
+	docker exec -it $(CONTAINER) php .phive/box.phar compile
 
 ssh:
 	docker exec -it $(CONTAINER) /bin/sh
